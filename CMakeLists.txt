@@ -26,10 +26,12 @@ set(CTCDECODE_SOURCE
   src/scorer.cpp
   )
 
-include_directories(src)
 
 add_library(ctcdecode SHARED ${CTCDECODE_SOURCE})
 set_target_properties(ctcdecode PROPERTIES VERSION ${PROJECT_VERSION})
+
+target_include_directories(ctcdecode PRIVATE src)
+target_include_directories(ctcdecode PUBLIC include)
 
 # add_library(kenlm STATIC IMPORTED)
 # set_property(TARGET kenlm PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/3rd_party/kenlm/build/lib/libkenlm.a) 

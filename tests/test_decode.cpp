@@ -1,5 +1,4 @@
-#include "ctc_beam_search_decoder.h"
-#include "scorer.h"
+#include "ctcdecode.h"
 
 #include <iostream>
 #include <vector>

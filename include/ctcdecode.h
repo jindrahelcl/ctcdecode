@@ -4,7 +4,10 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_map>
 
+// forward declaration of private class
+class PathTrie;
 
 /* External scorer to query score for n-gram or sentence, including language
  * model scoring and word insertion.
@@ -84,7 +87,7 @@ private:
   std::unordered_map<std::string, int> char_map_;
 
   std::vector<std::string> vocabulary_;
-}
+};
 
 
 /* Struct for the beam search output, containing the tokens based on the vocabulary indices, and the timesteps
