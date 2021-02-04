@@ -1,5 +1,5 @@
-#ifndef PATH_TRIE_H
-#define PATH_TRIE_H
+#ifndef __CTCDECODE_PATH_TRIE_H_
+#define __CTCDECODE_PATH_TRIE_H_
 
 #include <algorithm>
 #include <limits>
@@ -67,4 +67,4 @@ private:
   std::shared_ptr<fst::SortedMatcher<fst::StdVectorFst>> matcher_;
 };
 
-#endif  // PATH_TRIE_H
+#endif  // __CTCDECODE_PATH_TRIE_H_

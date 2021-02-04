@@ -1,5 +1,5 @@
-#ifndef DECODER_UTILS_H_
-#define DECODER_UTILS_H_
+#ifndef __CTCDECODE_DECODER_UTILS_H_
+#define __CTCDECODE_DECODER_UTILS_H_
 
 #include <unordered_map>
 #include <utility>
@@ -7,7 +7,7 @@
 
 #include "fst/log.h"
 #include "path_trie.h"
-#include "output.h"
+#include "ctcdecode.h"
 
 const float NUM_FLT_INF  = std::numeric_limits<float>::max();
 const float NUM_FLT_MIN  = std::numeric_limits<float>::min();

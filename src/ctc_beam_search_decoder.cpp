@@ -1,4 +1,5 @@
-#include "ctc_beam_search_decoder.h"
+#include "ctcdecode.h"
+#include "decoder_state.h"
 
 #include <algorithm>
 #include <cmath>

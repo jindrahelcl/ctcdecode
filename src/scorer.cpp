@@ -1,5 +1,3 @@
-#include "scorer.h"
-
 #include <unistd.h>
 #include <iostream>
 
@@ -9,7 +7,9 @@
 #include "util/string_piece.hh"
 #include "util/tokenize_piece.hh"
 
+#include "ctcdecode.h"
 #include "decoder_utils.h"
+#include "scorer.h"
 
 using namespace lm::ngram;
 
