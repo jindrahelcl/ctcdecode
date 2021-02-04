@@ -13,7 +13,7 @@
  * Parameters:
  *     probs_seq: 2-D vector that each element is a vector of probabilities
  *               over vocabulary of one time step.
- *     vocabulary: A vector of vocabulary.
+ *     vocabulary_size: The size of the vocabulary.
  *     beam_size: The width of beam search.
  *     cutoff_prob: Cutoff probability for pruning.
  *     cutoff_top_n: Cutoff number for pruning.
@@ -27,7 +27,7 @@
 
 std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
     const std::vector<std::vector<double>> &probs_seq,
-    const std::vector<std::string> &vocabulary,
+    size_t vocabulary_size,
     size_t beam_size,
     double cutoff_prob = 1.0,
     size_t cutoff_top_n = 40,
@@ -40,7 +40,7 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
  * Parameters:
  *     probs_seq: 3-D vector that each element is a 2-D vector that can be used
  *                by ctc_beam_search_decoder().
- *     vocabulary: A vector of vocabulary.
+ *     vocabulary_size: The size of the vocabulary.
  *     beam_size: The width of beam search.
  *     num_processes: Number of threads for beam search.
  *     cutoff_prob: Cutoff probability for pruning.
@@ -55,7 +55,7 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
 std::vector<std::vector<std::pair<double, Output>>>
 ctc_beam_search_decoder_batch(
     const std::vector<std::vector<std::vector<double>>> &probs_split,
-    const std::vector<std::string> &vocabulary,
+    size_t vocabulary_size,
     size_t beam_size,
     size_t num_processes,
     double cutoff_prob = 1.0,
@@ -73,7 +73,7 @@ class DecoderState
   size_t cutoff_top_n;
   size_t blank_id;
   int log_input;
-  std::vector<std::string> vocabulary;
+  size_t vocabulary_size;
   Scorer *ext_scorer;
 
   std::vector<PathTrie*> prefixes;
@@ -83,7 +83,7 @@ public:
   /* Initialize CTC beam search decoder for streaming
    *
    * Parameters:
-   *     vocabulary: A vector of vocabulary.
+   *     vocabulary_size: The size of the vocabulary.
    *     beam_size: The width of beam search.
    *     cutoff_prob: Cutoff probability for pruning.
    *     cutoff_top_n: Cutoff number for pruning.
@@ -91,7 +91,7 @@ public:
    *                 n-gram language model scoring and word insertion term.
    *                 Default null, decoding the input sample without scorer.
   */
-  DecoderState(const std::vector<std::string> &vocabulary,
+  DecoderState(size_t vocabulary_size,
                size_t beam_size,
                double cutoff_prob,
                size_t cutoff_top_n,

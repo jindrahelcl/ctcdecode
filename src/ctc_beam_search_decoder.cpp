@@ -14,7 +14,7 @@
 
 using FSTMATCH = fst::SortedMatcher<fst::StdVectorFst>;
 
-DecoderState::DecoderState(const std::vector<std::string> &vocabulary,
+DecoderState::DecoderState(size_t vocabulary_size,
                            size_t beam_size,
                            double cutoff_prob,
                            size_t cutoff_top_n,
@@ -27,18 +27,12 @@ DecoderState::DecoderState(const std::vector<std::string> &vocabulary,
   , cutoff_top_n(cutoff_top_n)
   , blank_id(blank_id)
   , log_input(log_input)
-  , vocabulary(vocabulary)
+  , vocabulary_size(vocabulary_size)
   , ext_scorer(ext_scorer)
 {
-  // assign space id
-  auto it = std::find(vocabulary.begin(), vocabulary.end(), " ");
-  // if no space in vocabulary
-  if (it == vocabulary.end()) {
-    space_id = -2;
-  } else {
-    space_id = std::distance(vocabulary.begin(), it);
-  }
 
+  space_id = -2; // TODO let user specify space id
+  
   // init prefixes' root
   root.score = root.log_prob_b_prev = 0.0;
   prefixes.push_back(&root);
@@ -59,7 +53,7 @@ DecoderState::next(const std::vector<std::vector<double>> &probs_seq)
   size_t num_time_steps = probs_seq.size();
   for (size_t i = 0; i < num_time_steps; ++i) {
     VALID_CHECK_EQ(probs_seq[i].size(),
-                   vocabulary.size(),
+                   vocabulary_size,
                    "The shape of probs_seq does not match with "
                    "the shape of the vocabulary");
   }
@@ -211,7 +205,7 @@ DecoderState::decode() const
 
 std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
     const std::vector<std::vector<double>> &probs_seq,
-    const std::vector<std::string> &vocabulary,
+    size_t vocabulary_size,
     size_t beam_size,
     double cutoff_prob,
     size_t cutoff_top_n,
@@ -219,8 +213,8 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
     int log_input,
     Scorer *ext_scorer)
 {
-  DecoderState state(vocabulary, beam_size, cutoff_prob, cutoff_top_n, blank_id,
-                     log_input, ext_scorer);
+  DecoderState state(vocabulary_size, beam_size, cutoff_prob, cutoff_top_n,
+                     blank_id, log_input, ext_scorer);
   state.next(probs_seq);
   return state.decode();
 }
@@ -229,7 +223,7 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
 std::vector<std::vector<std::pair<double, Output>>>
 ctc_beam_search_decoder_batch(
     const std::vector<std::vector<std::vector<double>>> &probs_split,
-    const std::vector<std::string> &vocabulary,
+    size_t vocabulary_size,
     size_t beam_size,
     size_t num_processes,
     double cutoff_prob,
@@ -249,7 +243,7 @@ ctc_beam_search_decoder_batch(
   for (size_t i = 0; i < batch_size; ++i) {
     res.emplace_back(pool.enqueue(ctc_beam_search_decoder,
                                   probs_split[i],
-                                  vocabulary,
+                                  vocabulary_size,
                                   beam_size,
                                   cutoff_prob,
                                   cutoff_top_n,
