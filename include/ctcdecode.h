@@ -22,15 +22,15 @@ class PathTrie;
 
 class Scorer {
 public:
-  Scorer(double alpha,
-         double beta,
+  Scorer(float alpha,
+         float beta,
          const std::string &lm_path,
          const std::vector<std::string> &vocabulary);
   ~Scorer();
 
-  double get_log_cond_prob(const std::vector<std::string> &words);
+  float get_log_cond_prob(const std::vector<std::string> &words);
 
-  double get_sent_log_prob(const std::vector<std::string> &words);
+  float get_sent_log_prob(const std::vector<std::string> &words);
 
   // return the max order
   size_t get_max_order() const { return max_order_; }
@@ -52,9 +52,9 @@ public:
   std::vector<std::string> split_labels(const std::vector<int> &labels);
 
   // language model weight
-  double alpha;
+  float alpha;
   // word insertion weight
-  double beta;
+  float beta;
 
   // pointer to the dictionary of FST
   void *dictionary;
@@ -73,7 +73,7 @@ protected:
   // set char map
   void set_char_map(const std::vector<std::string> &char_list);
 
-  double get_log_prob(const std::vector<std::string> &words);
+  float get_log_prob(const std::vector<std::string> &words);
 
   // translate the vector in index to string
   std::string vec2str(const std::vector<int> &input);
@@ -116,11 +116,11 @@ struct Output {
  *     in desending order.
 */
 
-std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
-    const std::vector<std::vector<double>> &probs_seq,
+std::vector<std::pair<float, Output>> ctc_beam_search_decoder(
+    const std::vector<std::vector<float>> &probs_seq,
     size_t vocabulary_size,
     size_t beam_size,
-    double cutoff_prob = 1.0,
+    float cutoff_prob = 1.0,
     size_t cutoff_top_n = 40,
     size_t blank_id = 0,
     int log_input = 0,
@@ -143,13 +143,13 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
  *     A 2-D vector that each element is a vector of beam search decoding
  *     result for one audio sample.
 */
-std::vector<std::vector<std::pair<double, Output>>>
+std::vector<std::vector<std::pair<float, Output>>>
 ctc_beam_search_decoder_batch(
-    const std::vector<std::vector<std::vector<double>>> &probs_split,
+    const std::vector<std::vector<std::vector<float>>> &probs_split,
     size_t vocabulary_size,
     size_t beam_size,
     size_t num_processes,
-    double cutoff_prob = 1.0,
+    float cutoff_prob = 1.0,
     size_t cutoff_top_n = 40,
     size_t blank_id = 0,
     int log_input = 0,

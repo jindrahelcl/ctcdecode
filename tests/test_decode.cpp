@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
   std::vector<std::string> vocab_list = {"'", " ", "a", "b", "c", "d", "_"};
   size_t beam_size = 20;
 
-  std::vector<std::vector<double>> probs_seq1 = {{
+  std::vector<std::vector<float>> probs_seq1 = {{
       0.06390443, 0.21124858, 0.27323887, 0.06870235, 0.0361254,
       0.18184413, 0.16493624
     }, {
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
       0.04377724, 0.01457421
     }};
 
-  std::vector<std::vector<double>> probs_seq2 = {{
+  std::vector<std::vector<float>> probs_seq2 = {{
       0.08034842, 0.22671944, 0.05799633, 0.36814645, 0.11307441,
       0.04468023, 0.10903471
     }, {

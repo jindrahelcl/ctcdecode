@@ -15,8 +15,8 @@ namespace ctcdecode {
 
 using namespace lm::ngram;
 
-Scorer::Scorer(double alpha,
-               double beta,
+Scorer::Scorer(float alpha,
+               float beta,
                const std::string& lm_path,
                const std::vector<std::string>& vocab_list) {
   this->alpha = alpha;
@@ -73,9 +73,9 @@ void Scorer::load_lm(const std::string& lm_path) {
   }
 }
 
-double Scorer::get_log_cond_prob(const std::vector<std::string>& words) {
+float Scorer::get_log_cond_prob(const std::vector<std::string>& words) {
   lm::base::Model* model = static_cast<lm::base::Model*>(language_model_);
-  double cond_prob;
+  float cond_prob;
   lm::ngram::State state, tmp_state, out_state;
   // avoid to inserting <s> in begin
   model->NullContextWrite(&state);
@@ -94,7 +94,7 @@ double Scorer::get_log_cond_prob(const std::vector<std::string>& words) {
   return cond_prob/NUM_FLT_LOGE;
 }
 
-double Scorer::get_sent_log_prob(const std::vector<std::string>& words) {
+float Scorer::get_sent_log_prob(const std::vector<std::string>& words) {
   std::vector<std::string> sentence;
   if (words.size() == 0) {
     for (size_t i = 0; i < max_order_; ++i) {
@@ -110,9 +110,9 @@ double Scorer::get_sent_log_prob(const std::vector<std::string>& words) {
   return get_log_prob(sentence);
 }
 
-double Scorer::get_log_prob(const std::vector<std::string>& words) {
+float Scorer::get_log_prob(const std::vector<std::string>& words) {
   assert(words.size() > max_order_);
-  double score = 0.0;
+  float score = 0.0;
   for (size_t i = 0; i < words.size() - max_order_ + 1; ++i) {
     std::vector<std::string> ngram(words.begin() + i,
                                    words.begin() + i + max_order_);

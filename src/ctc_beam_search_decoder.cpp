@@ -19,7 +19,7 @@ using FSTMATCH = fst::SortedMatcher<fst::StdVectorFst>;
 
 DecoderState::DecoderState(size_t vocabulary_size,
                            size_t beam_size,
-                           double cutoff_prob,
+                           float cutoff_prob,
                            size_t cutoff_top_n,
                            size_t blank_id,
                            int log_input,
@@ -50,7 +50,7 @@ DecoderState::DecoderState(size_t vocabulary_size,
 }
 
 void
-DecoderState::next(const std::vector<std::vector<double>> &probs_seq)
+DecoderState::next(const std::vector<std::vector<float>> &probs_seq)
 {
   // dimension check
   size_t num_time_steps = probs_seq.size();
@@ -73,7 +73,7 @@ DecoderState::next(const std::vector<std::vector<double>> &probs_seq)
           prefixes.begin(), prefixes.begin() + num_prefixes, prefix_compare);
       float blank_prob = log_input ? prob[blank_id] : std::log(prob[blank_id]);
       min_cutoff = prefixes[num_prefixes - 1]->score +
-                   blank_prob - std::max(0.0, ext_scorer->beta);
+                   blank_prob - std::max(0.0f, ext_scorer->beta);
       full_beam = (num_prefixes == beam_size);
     }
 
@@ -157,7 +157,7 @@ DecoderState::next(const std::vector<std::vector<double>> &probs_seq)
   }  // end of loop over time
 }
 
-std::vector<std::pair<double, Output>>
+std::vector<std::pair<float, Output>>
 DecoderState::decode() const
 {
   std::vector<PathTrie*> prefixes_copy = prefixes;
@@ -188,7 +188,7 @@ DecoderState::decode() const
   // compute aproximate ctc score as the return score, without affecting the
   // return order of decoding result. To delete when decoder gets stable.
   for (size_t i = 0; i < beam_size && i < prefixes_copy.size(); ++i) {
-    double approx_ctc = scores[prefixes_copy[i]];
+    float approx_ctc = scores[prefixes_copy[i]];
     if (ext_scorer != nullptr) {
       std::vector<int> output;
       std::vector<int> timesteps;
@@ -206,11 +206,11 @@ DecoderState::decode() const
   return get_beam_search_result(prefixes_copy, beam_size);
 }
 
-std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
-    const std::vector<std::vector<double>> &probs_seq,
+std::vector<std::pair<float, Output>> ctc_beam_search_decoder(
+    const std::vector<std::vector<float>> &probs_seq,
     size_t vocabulary_size,
     size_t beam_size,
-    double cutoff_prob,
+    float cutoff_prob,
     size_t cutoff_top_n,
     size_t blank_id,
     int log_input,
@@ -223,13 +223,13 @@ std::vector<std::pair<double, Output>> ctc_beam_search_decoder(
 }
 
 
-std::vector<std::vector<std::pair<double, Output>>>
+std::vector<std::vector<std::pair<float, Output>>>
 ctc_beam_search_decoder_batch(
-    const std::vector<std::vector<std::vector<double>>> &probs_split,
+    const std::vector<std::vector<std::vector<float>>> &probs_split,
     size_t vocabulary_size,
     size_t beam_size,
     size_t num_processes,
-    double cutoff_prob,
+    float cutoff_prob,
     size_t cutoff_top_n,
     size_t blank_id,
     int log_input,
@@ -242,7 +242,7 @@ ctc_beam_search_decoder_batch(
   size_t batch_size = probs_split.size();
 
   // enqueue the tasks of decoding
-  std::vector<std::future<std::vector<std::pair<double, Output>>>> res;
+  std::vector<std::future<std::vector<std::pair<float, Output>>>> res;
   for (size_t i = 0; i < batch_size; ++i) {
     res.emplace_back(pool.enqueue(ctc_beam_search_decoder,
                                   probs_split[i],
@@ -256,7 +256,7 @@ ctc_beam_search_decoder_batch(
   }
 
   // get decoding results
-  std::vector<std::vector<std::pair<double, Output>>> batch_results;
+  std::vector<std::vector<std::pair<float, Output>>> batch_results;
   for (size_t i = 0; i < batch_size; ++i) {
     batch_results.emplace_back(res[i].get());
   }

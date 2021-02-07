@@ -15,7 +15,7 @@ class DecoderState
   int abs_time_step;
   int space_id;
   size_t beam_size;
-  double cutoff_prob;
+  float cutoff_prob;
   size_t cutoff_top_n;
   size_t blank_id;
   int log_input;
@@ -39,7 +39,7 @@ public:
   */
   DecoderState(size_t vocabulary_size,
                size_t beam_size,
-               double cutoff_prob,
+               float cutoff_prob,
                size_t cutoff_top_n,
                size_t blank_id,
                int log_input,
@@ -52,7 +52,7 @@ public:
    *     probs: 2-D vector where each element is a vector of probabilities
    *               over alphabet of one time step.
   */
-  void next(const std::vector<std::vector<double>> &probs_seq);
+  void next(const std::vector<std::vector<float>> &probs_seq);
 
   /* Get current transcription from the decoder stream state
    *
@@ -60,7 +60,7 @@ public:
    *     A vector where each element is a pair of score and decoding result,
    *     in descending order.
   */
-  std::vector<std::pair<double, Output>> decode() const;
+  std::vector<std::pair<float, Output>> decode() const;
 };
 
 } // namespace ctcdecode

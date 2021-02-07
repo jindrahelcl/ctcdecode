@@ -57,13 +57,13 @@ T log_sum_exp(const T &x, const T &y) {
 
 // Get pruned probability vector for each time step's beam search
 std::vector<std::pair<size_t, float>> get_pruned_log_probs(
-    const std::vector<double> &prob_step,
-    double cutoff_prob,
+    const std::vector<float> &prob_step,
+    float cutoff_prob,
     size_t cutoff_top_n,
     int log_input);
 
 // Get beam search result from prefixes in trie tree
-std::vector<std::pair<double, Output>> get_beam_search_result(
+std::vector<std::pair<float, Output>> get_beam_search_result(
     const std::vector<PathTrie *> &prefixes,
     size_t beam_size);
 

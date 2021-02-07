@@ -15,7 +15,7 @@
 
 namespace ctcdecode {
 
-const double OOV_SCORE = -1000.0;
+const float OOV_SCORE = -1000.0;
 const std::string START_TOKEN = "<s>";
 const std::string UNK_TOKEN = "<unk>";
 const std::string END_TOKEN = "</s>";
