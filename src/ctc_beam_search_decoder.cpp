@@ -13,6 +13,8 @@
 #include "fst/fstlib.h"
 #include "path_trie.h"
 
+namespace ctcdecode {
+
 using FSTMATCH = fst::SortedMatcher<fst::StdVectorFst>;
 
 DecoderState::DecoderState(size_t vocabulary_size,
@@ -260,3 +262,5 @@ ctc_beam_search_decoder_batch(
   }
   return batch_results;
 }
+
+} // namespace ctcdecode

@@ -9,6 +9,8 @@
 
 #include "fst/fstlib.h"
 
+namespace ctcdecode {
+
 /* Trie tree for prefix storing and manipulating, with a dictionary in
  * finite-state transducer for spelling correction.
  */
@@ -66,5 +68,7 @@ private:
   // true if finding ars in FST
   std::shared_ptr<fst::SortedMatcher<fst::StdVectorFst>> matcher_;
 };
+
+} // namespace ctcdecode
 
 #endif  // __CTCDECODE_PATH_TRIE_H_

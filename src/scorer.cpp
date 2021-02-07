@@ -11,6 +11,8 @@
 #include "decoder_utils.h"
 #include "scorer.h"
 
+namespace ctcdecode {
+
 using namespace lm::ngram;
 
 Scorer::Scorer(double alpha,
@@ -228,3 +230,5 @@ void Scorer::fill_dictionary(bool add_space) {
   fst::Minimize(new_dict);
   this->dictionary = new_dict;
 }
+
+} // namespace ctcdecode

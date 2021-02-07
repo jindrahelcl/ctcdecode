@@ -8,6 +8,8 @@
 #include "ctcdecode.h"
 #include "scorer.h"
 
+namespace ctcdecode {
+
 class DecoderState
 {
   int abs_time_step;
@@ -60,5 +62,7 @@ public:
   */
   std::vector<std::pair<double, Output>> decode() const;
 };
+
+} // namespace ctcdecode
 
 #endif  // __CTCDECODE_DECODER_STATE_H_

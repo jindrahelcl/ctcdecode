@@ -4,6 +4,8 @@
 #include <cmath>
 #include <limits>
 
+namespace ctcdecode {
+
 std::vector<std::pair<size_t, float>> get_pruned_log_probs(
     const std::vector<double> &prob_step,
     double cutoff_prob,
@@ -189,3 +191,5 @@ bool add_word_to_dictionary(
   add_word_to_fst(int_word, dictionary);
   return true;  // return with successful adding
 }
+
+} // namespace ctcdecode

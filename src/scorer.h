@@ -13,6 +13,8 @@
 
 #include "path_trie.h"
 
+namespace ctcdecode {
+
 const double OOV_SCORE = -1000.0;
 const std::string START_TOKEN = "<s>";
 const std::string UNK_TOKEN = "<unk>";
@@ -29,5 +31,8 @@ public:
 
   std::vector<std::string> vocabulary;
 };
+
+
+} // namespace ctcdecode
 
 #endif  // __CTCDECODE_SCORER_H_

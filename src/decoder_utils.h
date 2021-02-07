@@ -9,6 +9,8 @@
 #include "path_trie.h"
 #include "ctcdecode.h"
 
+namespace ctcdecode {
+
 const float NUM_FLT_INF  = std::numeric_limits<float>::max();
 const float NUM_FLT_MIN  = std::numeric_limits<float>::min();
 const float NUM_FLT_LOGE = 0.4342944819;
@@ -100,3 +102,5 @@ bool add_word_to_dictionary(
     int SPACE_ID,
     fst::StdVectorFst *dictionary);
 #endif  // DECODER_UTILS_H
+
+} // namespace ctcdecode

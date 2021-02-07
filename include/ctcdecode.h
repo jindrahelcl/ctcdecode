@@ -6,6 +6,8 @@
 #include <vector>
 #include <unordered_map>
 
+namespace ctcdecode {
+
 // forward declaration of private class
 class PathTrie;
 
@@ -152,5 +154,7 @@ ctc_beam_search_decoder_batch(
     size_t blank_id = 0,
     int log_input = 0,
     Scorer *ext_scorer = nullptr);
+
+} // namespace ctcdecode
 
 #endif  // __CTCDECODE_H_

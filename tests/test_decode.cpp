@@ -53,11 +53,11 @@ int main(int argc, char* argv[]) {
   std::vector<std::string> greedy_result = {"ac'bdc", "b'da"};
   std::vector<std::string> beam_result = {"acdc", "b'a", "a a"};
 
-  auto res1 = ctc_beam_search_decoder(probs_seq1, vocab_list.size(), beam_size, 1.0, 40, 6);
-  auto res2 = ctc_beam_search_decoder(probs_seq2, vocab_list.size(), beam_size, 1.0, 40, 6);
+  auto res1 = ctcdecode::ctc_beam_search_decoder(probs_seq1, vocab_list.size(), beam_size, 1.0, 40, 6);
+  auto res2 = ctcdecode::ctc_beam_search_decoder(probs_seq2, vocab_list.size(), beam_size, 1.0, 40, 6);
 
-  Scorer lm(0, 0, "test.arpa", vocab_list);
-  auto res_lm = ctc_beam_search_decoder(probs_seq2, vocab_list.size(), beam_size, 1.0, 40, 6, 0, &lm);
+  ctcdecode::Scorer lm(0, 0, "test.arpa", vocab_list);
+  auto res_lm = ctcdecode::ctc_beam_search_decoder(probs_seq2, vocab_list.size(), beam_size, 1.0, 40, 6, 0, &lm);
 
   std::string str1;
   for(int i = 0; i < res1[0].second.tokens.size(); ++i) {
